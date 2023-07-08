@@ -1,0 +1,32 @@
+{
+  "manifest_version": 2,
+  "name": "GitHub Save",
+  "version": "1.0",
+
+  "description": "If you ever wanted to save inidividual files from a GitHub repository that piqued your interest, this extension is for you.",
+
+  "icons": {
+    "48": "icons/githubsave.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.github.com/*"],
+      "js": ["index.js"],
+      "css": ["./main.css"],
+      "run_at": "document_end"
+    }
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/githubsave.png",
+    "default_title": "GitHub Save",
+    "default_popup": "popup/index.html"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "githubsave@example.com"
+    }
+  }
+}
