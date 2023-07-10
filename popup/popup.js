@@ -117,4 +117,17 @@ const showUserCode = async (user_code) => {
   userCode.id = "user-code";
   userCode.innerHTML = user_code;
   container.appendChild(userCode);
+
+  // show copy button
+  const copyToClipboard = document.createElement("button");
+  copyToClipboard.id = "copy-code";
+  copyToClipboard.innerHTML = "Copy code";
+  container.appendChild(copyToClipboard);
+
+  // add copy event listener
+  const copyButton = document.getElementById("copy-code");
+  copyButton.addEventListener("click", () => {
+    navigator.clipboard.writeText(user_code);
+    copyButton.innerHTML = "Copied!";
+  });
 };
