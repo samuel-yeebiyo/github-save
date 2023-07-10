@@ -1,0 +1,52 @@
+:root {
+  --background: rgba(0, 0, 0, 0.9);
+  --accent: rgba(255, 255, 255, 0.8);
+}
+@font-face {
+  font-family: "Mona Sans";
+  src: url("font/Mona-Sans.woff2") format("woff2 supports variations"),
+    url("font/Mona-Sans.woff2") format("woff2-variations");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+html {
+  font-family: "Mona Sans";
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  width: 300px;
+  background: var(--background);
+  color: var(--accent);
+  padding: 15px;
+}
+
+#title {
+  margin-bottom: 5px;
+}
+
+#auth-button {
+  outline: none;
+  background: none;
+  border: 1px solid var(--accent);
+  padding: 4px 8px;
+  color: white;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+#auth-button:hover {
+  background: var(--accent);
+  color: black;
+}
+#user-code {
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: center;
+  letter-spacing: 0.5rem;
+}
