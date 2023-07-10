@@ -28,6 +28,22 @@ body {
 #title {
   margin-bottom: 5px;
 }
+#spinner {
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner_0XTQ {
+  transform-origin: center;
+  animation: spinner_y6GP 0.75s linear infinite;
+  fill: white;
+}
+@keyframes spinner_y6GP {
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 #auth-button {
   outline: none;

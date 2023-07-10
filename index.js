@@ -119,23 +119,26 @@ let observer = new MutationObserver(function (mutations) {
 const config = { subtree: true, childList: true };
 observer.observe(document, config);
 
-// (function (history) {
-//   console.log("In IFFE");
-//   let pushState = history.pushState;
-//   console.log(pushState);
-//   history.pushState = function (state) {
-//     console.log("Setting event handler");
+const injectScript = (file_path, tag) => {
+  const node = document.getElementsByTagName(tag)[0];
+  const script = document.createElement("script");
+  script.setAttribute("type", "text/javascript");
+  script.setAttribute("src", file_path);
+  node.appendChild(script);
+};
 
-//     if (typeof history.onpushstate == "function") {
-//       history.onpushstate({ state: state });
-//     }
-//     // ... whatever else you want to do
-//     // maybe call onhashchange e.handler
-//     return pushState.apply(history, arguments);
-//   };
-//   console.log(history.pushState);
-// })(window.history);
+// This will inject this script tag to all tabs that have our target site opened
+// This is useful when we want to access variables and data that are in the context of the webpage
+injectScript(browser.runtime.getURL("injectable.js"), "body");
 
-// window.onpopstate = history.onpushstate = function (e) {
-//   console.log("Navigating now");
-// };
+// Add an event listener to listen to mesage from the injected script to the background script
+window.addEventListener(
+  "message",
+  (event) => {
+    if (event.data.type && event.data.type == "FROM_PAGE") {
+      console.log("Received message: ", event.data.essential);
+      browser.runtime.sendMessage({ essential: event.data.essential });
+    }
+  },
+  false
+);
