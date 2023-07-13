@@ -92,11 +92,29 @@ const progressBarExists = () => {
   return true;
 };
 
+const injectScript = (file_path, tag) => {
+  const node = document.getElementsByTagName(tag)[0];
+  const script = document.createElement("script");
+  script.id = "ghs-script";
+  script.setAttribute("type", "text/javascript");
+  script.setAttribute("src", file_path);
+  node.appendChild(script);
+};
+
+const dejectScript = () => {
+  const script = document.getElementById("ghs-script");
+  script.remove();
+};
+
+// This will inject this script tag to all tabs that have our target site opened
+// This is useful when we want to access variables and data that are in the context of the webpage
+injectScript(browser.runtime.getURL("injectable.js"), "body");
+
 let previousUrl = location.href;
 let observer = new MutationObserver(function (mutations) {
   if (location.href !== previousUrl) {
     previousUrl = location.href;
-    console.log(`URL changed to ${location.href}`);
+    dejectScript();
 
     const checkForProgressBar = () => {
       const exists = progressBarExists();
@@ -104,6 +122,7 @@ let observer = new MutationObserver(function (mutations) {
         addIconToFileView();
         addIconToToolbar();
         clearProgressInterval();
+        injectScript(browser.runtime.getURL("injectable.js"), "body");
       }
     };
     const loadingInterval = setInterval(checkForProgressBar, 1000);
@@ -116,24 +135,11 @@ let observer = new MutationObserver(function (mutations) {
 const config = { subtree: true, childList: true };
 observer.observe(document, config);
 
-const injectScript = (file_path, tag) => {
-  const node = document.getElementsByTagName(tag)[0];
-  const script = document.createElement("script");
-  script.setAttribute("type", "text/javascript");
-  script.setAttribute("src", file_path);
-  node.appendChild(script);
-};
-
-// This will inject this script tag to all tabs that have our target site opened
-// This is useful when we want to access variables and data that are in the context of the webpage
-injectScript(browser.runtime.getURL("injectable.js"), "body");
-
 // Add an event listener to listen to mesage from the injected script to the background script
 window.addEventListener(
   "message",
   (event) => {
     if (event.data.type && event.data.type == "LIKE_FILE") {
-      console.log("Received message: ", event.data.likedFile);
       browser.runtime.sendMessage({
         context: "LIKE",
         likedFile: event.data.likedFile,
