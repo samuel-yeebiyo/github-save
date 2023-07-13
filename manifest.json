@@ -2,7 +2,15 @@
   "manifest_version": 2,
   "name": "GitHub Save",
   "version": "1.0",
-  "permissions": ["activeTab", "scripting", "identity", "storage"],
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "identity",
+    "storage",
+    "cookies",
+    "<all_urls>",
+    "tabs"
+  ],
   "description": "If you ever wanted to save inidividual files from a GitHub repository that piqued your interest, this extension is for you.",
 
   "icons": {

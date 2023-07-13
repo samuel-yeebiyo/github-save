@@ -135,9 +135,12 @@ injectScript(browser.runtime.getURL("injectable.js"), "body");
 window.addEventListener(
   "message",
   (event) => {
-    if (event.data.type && event.data.type == "FROM_PAGE") {
-      console.log("Received message: ", event.data.essential);
-      browser.runtime.sendMessage({ essential: event.data.essential });
+    if (event.data.type && event.data.type == "LIKE_FILE") {
+      console.log("Received message: ", event.data.likedFile);
+      browser.runtime.sendMessage({
+        context: "LIKE",
+        likedFile: event.data.likedFile,
+      });
     }
   },
   false

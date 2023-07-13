@@ -1,11 +1,11 @@
 (() => {
-  let authorizationButton = document.getElementById("my-save-file");
+  let likeButton = document.getElementById("my-save-file");
 
-  if (authorizationButton) {
-    authorizationButton.addEventListener("click", () => {
-      let essential = "some piece of data";
+  if (likeButton) {
+    likeButton.addEventListener("click", () => {
+      let likedFile = window.location.href;
       console.log("Sending message");
-      window.postMessage({ type: "FROM_PAGE", essential });
+      window.postMessage({ type: "LIKE_FILE", likedFile });
     });
   }
 })();
