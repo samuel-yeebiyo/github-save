@@ -43,7 +43,6 @@ const addIconToToolbar = () => {
 };
 
 const addIconToFileView = () => {
-  console.log("Adding icon");
   const fileHeader = document.querySelector('[title="More file actions"]');
   const saveButton = document.getElementById("my-save-file");
   if (fileHeader && !saveButton) {
@@ -76,7 +75,6 @@ const addIconToFileView = () => {
     `;
     saveIcon = saveIcon.trim();
     template.innerHTML = saveIcon;
-    console.log({ template });
 
     fileHeader.parentNode.insertBefore(
       template.content.firstChild,
@@ -101,7 +99,6 @@ let observer = new MutationObserver(function (mutations) {
     console.log(`URL changed to ${location.href}`);
 
     const checkForProgressBar = () => {
-      console.log("Checking");
       const exists = progressBarExists();
       if (!exists) {
         addIconToFileView();

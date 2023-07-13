@@ -4,8 +4,8 @@
 }
 @font-face {
   font-family: "Mona Sans";
-  src: url("font/Mona-Sans.woff2") format("woff2 supports variations"),
-    url("font/Mona-Sans.woff2") format("woff2-variations");
+  src: url("../font/Mona-Sans.woff2") format("woff2 supports variations"),
+    url("../font/Mona-Sans.woff2") format("woff2-variations");
   font-weight: 200 900;
   font-stretch: 75% 125%;
 }
@@ -19,10 +19,15 @@ html {
   box-sizing: border-box;
 }
 body {
-  width: 300px;
+  width: 250px;
   background: var(--background);
   color: var(--accent);
   padding: 15px;
+  overflow: scroll;
+}
+a {
+  color: white;
+  margin-top: 20px;
 }
 
 #title {
@@ -45,6 +50,7 @@ body {
   }
 }
 
+/* Auth button */
 #auth-button {
   outline: none;
   background: none;
@@ -54,26 +60,22 @@ body {
   border-radius: 5px;
   margin-top: 20px;
 }
-#copy-code {
-  outline: none;
-  background: none;
-  border: 1px solid var(--accent);
-  padding: 6px 8px;
-  color: white;
-  border-radius: 5px;
-  margin-top: 20px;
-  width: 100%;
-  text-align: center;
-}
-#auth-button:hover,
-#copy-code:hover {
+#auth-button:hover {
   background: var(--accent);
   color: black;
 }
-#user-code {
-  font-weight: bold;
-  font-size: 20px;
-  margin-top: 30px;
-  text-align: center;
-  letter-spacing: 0.5rem;
+
+/* User information */
+#user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+#user-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 100%;
+  border: 2px solid white;
+  margin-bottom: 10px;
 }

@@ -24,10 +24,8 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
         }
       );
       const responseData = await response.json();
-      console.log(responseData);
       break;
     case "AUTH":
-      console.log("Authentication message");
       const userData = await authFlow();
       if (userData) {
         window.userData = userData;
@@ -92,6 +90,5 @@ const sendCodeToServer = async (data) => {
   }
 
   const responseData = await response.json();
-  console.log(responseData);
   return responseData;
 };

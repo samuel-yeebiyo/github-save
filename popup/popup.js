@@ -1,5 +1,6 @@
 const contentSection = document.getElementById("content");
 const authTemplate = document.getElementById("auth-content");
+const userTemplate = document.getElementById("user-content");
 
 // function to make request to server for user session.
 const checkWithServer = async () => {
@@ -18,13 +19,18 @@ const checkWithServer = async () => {
     return null;
   }
   const responseData = await response.json();
-  console.log(responseData);
   return responseData;
 };
 
 // Show authenticated user the authed template
-const showAuthedView = () => {
-  window.location.href = "user.html";
+const showAuthedView = (userData) => {
+  const clone = userTemplate.content.cloneNode(true);
+  // <img src="" id="user-avatar" alt="user avatar" />
+  let avatar = clone.getElementById("user-avatar");
+  avatar.setAttribute("src", userData.avatar);
+  let username = clone.getElementById("user-name");
+  username.innerHTML = userData.name;
+  contentSection.appendChild(clone);
 };
 
 // Show non-authenticated user the unauthed template
@@ -63,14 +69,13 @@ files.`;
     isAuthenticated = true;
   }
 
+  // remove spinner
+  const spinner = document.getElementById("spinner");
+  spinner.remove();
+
   if (isAuthenticated) {
-    console.log("Authed");
-    showAuthedView();
+    showAuthedView(authResponse);
   } else {
-    console.log("Not authed");
-    // remove spinner
-    const spinner = document.getElementById("spinner");
-    spinner.remove();
     showNonAuthView();
   }
 })();
@@ -96,7 +101,5 @@ window.addEventListener("DOMContentLoaded", () => {
   browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     let currentTabId = tabs[0].id;
     let currentData = page.userData[currentTabId];
-
-    console.log({ currentData });
   });
 });
