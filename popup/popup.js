@@ -30,6 +30,9 @@ const showAuthedView = (userData) => {
   avatar.setAttribute("src", userData.avatar);
   let username = clone.getElementById("user-name");
   username.innerHTML = userData.name;
+  let likedCounter = clone.getElementById("liked-counter");
+  likedCounter.innerHTML = `You have ${userData.likes.length} liked files`;
+
   contentSection.appendChild(clone);
 };
 

@@ -25,12 +25,9 @@ body {
   padding: 15px;
   overflow: scroll;
 }
-a {
-  color: white;
-  margin-top: 20px;
-}
 
 #title {
+  font-size: 18px;
   margin-bottom: 5px;
 }
 #spinner {
@@ -78,4 +75,14 @@ a {
   border-radius: 100%;
   border: 2px solid white;
   margin-bottom: 10px;
+}
+#user-name {
+  margin-bottom: 5px;
+}
+#liked-counter {
+  font-size: 14px;
+}
+#liked-link {
+  color: white;
+  margin-top: 20px;
 }
