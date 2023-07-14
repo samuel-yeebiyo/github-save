@@ -4,11 +4,41 @@ window.userData = {};
 // Add a message listener to check for messages from the content script
 browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   switch (message.context) {
+    case "AUTH":
+      const userData = await authFlow();
+      if (userData) {
+        return Promise.resolve({
+          authed: true,
+        });
+      } else {
+        return Promise.resolve({ authed: false });
+      }
+      break;
+    case "DEAUTH":
+      const logoutResponse = await fetch(
+        "https://f4a5-41-139-17-82.ngrok-free.app/logout",
+        {
+          method: "POST",
+          headers: {
+            "X-CSRF-MITIGATION-GHS": 1,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          credentials: "include",
+        }
+      );
+      if (logoutResponse.status == 200) {
+        return Promise.resolve(true);
+      } else {
+        return Promise.resolve(false);
+      }
+      break;
     case "LIKE":
       window.likedFile[sender.tab.id] = message.likedFile || null;
 
-      const response = await fetch(
-        "https://1bfb-41-139-17-82.ngrok-free.app/like",
+      const likeResponse = await fetch(
+        "https://f4a5-41-139-17-82.ngrok-free.app/like",
         {
           method: "POST",
           headers: {
@@ -23,13 +53,42 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
           }),
         }
       );
-      const responseData = await response.json();
-      break;
-    case "AUTH":
-      const userData = await authFlow();
-      if (userData) {
-        window.userData = userData;
+      if (likeResponse.status !== 200) {
+        // Error handling
+        if (likeResponse.status == 401) {
+          return Promise.resolve({
+            type: "error",
+            message: `Authorization error encountered.\nPlease make sure you are signed in.`,
+          });
+        } else {
+          return Promise.resolve({
+            type: "error",
+            message: "Server error encountered, please try again later.",
+          });
+        }
       }
+      const likeResponseData = await likeResponse.json();
+      return Promise.resolve(likeResponseData);
+      break;
+    case "CHECK":
+      const checkResponse = await fetch(
+        "https://f4a5-41-139-17-82.ngrok-free.app/like/check",
+        {
+          method: "POST",
+          headers: {
+            "X-CSRF-MITIGATION-GHS": 1,
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            fileUrl: message.file,
+          }),
+        }
+      );
+      const checkResponseData = await checkResponse.json();
+      return Promise.resolve(checkResponseData.liked);
   }
 });
 
@@ -73,7 +132,7 @@ const requestAuth = async ({ interactive }) => {
 const sendCodeToServer = async (data) => {
   const code = data.split("?")[1].split("=")[1];
   const response = await fetch(
-    "https://1bfb-41-139-17-82.ngrok-free.app/auth",
+    "https://f4a5-41-139-17-82.ngrok-free.app/auth",
     {
       method: "POST",
       headers: {

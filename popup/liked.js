@@ -4,7 +4,7 @@ const containerTemplate = document.getElementById("liked-content");
 // function to make request to server for user session.
 const getLikedFiles = async () => {
   const response = await fetch(
-    "https://1bfb-41-139-17-82.ngrok-free.app/likes",
+    "https://f4a5-41-139-17-82.ngrok-free.app/likes",
     {
       method: "GET",
       mode: "cors",

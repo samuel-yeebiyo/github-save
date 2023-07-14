@@ -24,6 +24,7 @@ body {
   color: var(--accent);
   padding: 15px;
   overflow: scroll;
+  position: relative;
 }
 
 #title {
@@ -85,4 +86,17 @@ body {
 #liked-link {
   color: white;
   margin-top: 20px;
+}
+
+#sign-out {
+  all: unset;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  outline: revert;
+}
+
+#sign-out svg {
+  fill: white;
 }

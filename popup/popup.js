@@ -5,7 +5,7 @@ const userTemplate = document.getElementById("user-content");
 // function to make request to server for user session.
 const checkWithServer = async () => {
   const response = await fetch(
-    "https://1bfb-41-139-17-82.ngrok-free.app/user",
+    "https://f4a5-41-139-17-82.ngrok-free.app/user",
     {
       method: "GET",
       mode: "cors",
@@ -33,6 +33,25 @@ const showAuthedView = (userData) => {
   let likedCounter = clone.getElementById("liked-counter");
   likedCounter.innerHTML = `You have ${userData.likes.length} liked files`;
 
+  let signoutButton = clone.getElementById("sign-out");
+  signoutButton.addEventListener("click", async () => {
+    const deauthenticating = new Promise((resolve, reject) => {
+      browser.runtime.sendMessage(
+        {
+          context: "DEAUTH",
+        },
+        (response) => {
+          resolve(response);
+        }
+      );
+    });
+
+    const deauthed = await deauthenticating.then((res) => res);
+    if (deauthed) {
+      window.location.reload();
+    }
+  });
+
   contentSection.appendChild(clone);
 };
 
@@ -57,9 +76,27 @@ files.`;
 
   // attach event listener to auth button
   authButton.addEventListener("click", async () => {
-    browser.runtime.sendMessage({
-      context: "AUTH",
+    const authenticating = new Promise((resolve, reject) => {
+      browser.runtime.sendMessage(
+        {
+          context: "AUTH",
+        },
+        (response) => {
+          resolve(response.authed);
+        }
+      );
     });
+
+    const authed = await authenticating.then((liked) => liked);
+
+    if (authed) {
+      window.location.reload();
+    } else {
+      const authButton = document.getElementById("auth-button");
+      authButton.remove();
+      const authMessage = document.getElementById("auth-message");
+      authMessage.innerHTML = "Authentication failed please try again!";
+    }
   });
 };
 
