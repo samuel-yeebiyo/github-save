@@ -1,0 +1,102 @@
+:root {
+  --background: rgba(0, 0, 0, 0.9);
+  --accent: rgba(255, 255, 255, 0.8);
+}
+@font-face {
+  font-family: "Mona Sans";
+  src: url("../font/Mona-Sans.woff2") format("woff2 supports variations"),
+    url("../font/Mona-Sans.woff2") format("woff2-variations");
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+
+html {
+  font-family: "Mona Sans";
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  width: 250px;
+  background: var(--background);
+  color: var(--accent);
+  padding: 15px;
+  overflow: scroll;
+  position: relative;
+}
+
+#title {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+#spinner {
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner_0XTQ {
+  transform-origin: center;
+  animation: spinner_y6GP 0.75s linear infinite;
+  fill: white;
+}
+@keyframes spinner_y6GP {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Auth button */
+#auth-button {
+  outline: none;
+  background: none;
+  border: 1px solid var(--accent);
+  padding: 6px 8px;
+  color: white;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+#auth-button:hover {
+  background: var(--accent);
+  color: black;
+}
+
+/* User information */
+#user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+#user-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 100%;
+  border: 2px solid white;
+  margin-bottom: 10px;
+}
+#user-name {
+  margin-bottom: 5px;
+}
+#liked-counter {
+  font-size: 14px;
+}
+#liked-link {
+  color: white;
+  margin-top: 20px;
+}
+
+#sign-out {
+  all: unset;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  outline: revert;
+}
+
+#sign-out svg {
+  fill: white;
+}
