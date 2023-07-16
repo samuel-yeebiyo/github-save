@@ -16,7 +16,7 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
     case "DEAUTH":
       const logoutResponse = await fetch(
-        "https://f4a5-41-139-17-82.ngrok-free.app/logout",
+        "https://githubsave.samuelyyy.com/logout",
         {
           method: "POST",
           headers: {
@@ -38,7 +38,7 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       window.likedFile[sender.tab.id] = message.likedFile || null;
 
       const likeResponse = await fetch(
-        "https://f4a5-41-139-17-82.ngrok-free.app/like",
+        "https://githubsave.samuelyyy.com/like",
         {
           method: "POST",
           headers: {
@@ -72,7 +72,7 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
     case "CHECK":
       const checkResponse = await fetch(
-        "https://f4a5-41-139-17-82.ngrok-free.app/like/check",
+        "https://githubsave.samuelyyy.com/like/check",
         {
           method: "POST",
           headers: {
@@ -131,19 +131,17 @@ const requestAuth = async ({ interactive }) => {
 
 const sendCodeToServer = async (data) => {
   const code = data.split("?")[1].split("=")[1];
-  const response = await fetch(
-    "https://f4a5-41-139-17-82.ngrok-free.app/auth",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        code: code,
-      }),
-    }
-  );
+  const response = await fetch("https://githubsave.samuelyyy.com/auth", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      code: code,
+      platform: "firefox",
+    }),
+  });
   if (response.status !== 200) {
     return null;
   }

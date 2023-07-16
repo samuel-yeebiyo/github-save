@@ -12,7 +12,7 @@ const asyncFunctionWithAwait = async (message, sender, sendResponse) => {
       break;
     case "DEAUTH":
       const logoutResponse = await fetch(
-        "https://073e-41-139-17-82.ngrok-free.app/logout",
+        "https://githubsave.samuelyyy.com/logout",
         {
           method: "POST",
           headers: {
@@ -32,7 +32,7 @@ const asyncFunctionWithAwait = async (message, sender, sendResponse) => {
       break;
     case "LIKE":
       const likeResponse = await fetch(
-        "https://073e-41-139-17-82.ngrok-free.app/like",
+        "https://githubsave.samuelyyy.com/like",
         {
           method: "POST",
           headers: {
@@ -66,7 +66,7 @@ const asyncFunctionWithAwait = async (message, sender, sendResponse) => {
       break;
     case "CHECK":
       const checkResponse = await fetch(
-        "https://073e-41-139-17-82.ngrok-free.app/like/check",
+        "https://githubsave.samuelyyy.com/like/check",
         {
           method: "POST",
           headers: {
@@ -114,7 +114,7 @@ const authFlow = async () => {
 // Auth functions
 const requestAuth = async ({ interactive }) => {
   const redirectURL = chrome.identity.getRedirectURL();
-  const CLIENT_ID = "26e7a126ddb4af8dd7c2";
+  const CLIENT_ID = "5dc6857f5630be9f7709";
 
   const scopes = ["user"];
   let authURL = "https://github.com/login/oauth/authorize";
@@ -131,19 +131,17 @@ const requestAuth = async ({ interactive }) => {
 
 const sendCodeToServer = async (data) => {
   const code = data.split("?")[1].split("=")[1];
-  const response = await fetch(
-    "https://073e-41-139-17-82.ngrok-free.app/auth",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        code: code,
-      }),
-    }
-  );
+  const response = await fetch("https://githubsave.samuelyyy.com/auth", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      code: code,
+      platform: "chrome",
+    }),
+  });
   if (response.status !== 200) {
     return null;
   }

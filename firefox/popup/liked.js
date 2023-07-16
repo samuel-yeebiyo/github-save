@@ -3,17 +3,14 @@ const containerTemplate = document.getElementById("liked-content");
 
 // function to make request to server for user session.
 const getLikedFiles = async () => {
-  const response = await fetch(
-    "https://f4a5-41-139-17-82.ngrok-free.app/likes",
-    {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "X-CSRF-MITIGATION-GHS": 1,
-        Accept: "application/json",
-      },
-    }
-  );
+  const response = await fetch("https://githubsave.samuelyyy.com/likes", {
+    method: "GET",
+    mode: "cors",
+    headers: {
+      "X-CSRF-MITIGATION-GHS": 1,
+      Accept: "application/json",
+    },
+  });
   if (response.status !== 200) {
     return null;
   }

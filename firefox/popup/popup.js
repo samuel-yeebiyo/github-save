@@ -4,17 +4,14 @@ const userTemplate = document.getElementById("user-content");
 
 // function to make request to server for user session.
 const checkWithServer = async () => {
-  const response = await fetch(
-    "https://f4a5-41-139-17-82.ngrok-free.app/user",
-    {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "X-CSRF-MITIGATION-GHS": 1,
-        Accept: "application/json",
-      },
-    }
-  );
+  const response = await fetch("https://githubsave.samuelyyy.com/user", {
+    method: "GET",
+    mode: "cors",
+    headers: {
+      "X-CSRF-MITIGATION-GHS": 1,
+      Accept: "application/json",
+    },
+  });
   if (response.status !== 200) {
     return null;
   }
