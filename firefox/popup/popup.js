@@ -26,9 +26,9 @@ const showAuthedView = (userData) => {
   let avatar = clone.getElementById("user-avatar");
   avatar.setAttribute("src", userData.avatar);
   let username = clone.getElementById("user-name");
-  username.innerHTML = userData.name;
+  username.textContent = userData.name;
   let likedCounter = clone.getElementById("liked-counter");
-  likedCounter.innerHTML = `You have ${userData.likes.length} liked files`;
+  likedCounter.textContent = `You have ${userData.likes.length} liked files`;
 
   let signoutButton = clone.getElementById("sign-out");
   signoutButton.addEventListener("click", async () => {
@@ -57,14 +57,14 @@ const showNonAuthView = () => {
   // show authorize prompt
   let clone = authTemplate.content.cloneNode(true);
   let message = clone.getElementById("auth-message");
-  message.innerHTML = `Please authenticate using your GitHub account to start saving repo
+  message.textContent = `Please authenticate using your GitHub account to start saving repo
 files.`;
 
   // create authorize button
   const authButton = document.createElement("button");
   authButton.id = "auth-button";
   authButton.type = "button";
-  authButton.innerHTML = "Authorize";
+  authButton.textContent = "Authorize";
 
   // insert elements to DOM
   const container = clone.getElementById("auth-container");
@@ -92,7 +92,7 @@ files.`;
       const authButton = document.getElementById("auth-button");
       authButton.remove();
       const authMessage = document.getElementById("auth-message");
-      authMessage.innerHTML = "Authentication failed please try again!";
+      authMessage.textContent = "Authentication failed please try again!";
     }
   });
 };
@@ -120,7 +120,7 @@ files.`;
 // Copy to clipboard
 // copyButton.addEventListener("click", () => {
 //   navigator.clipboard.writeText(user_code);
-//   copyButton.innerHTML = "Copied!";
+//   copyButton.textContent = "Copied!";
 // });
 
 // Inject script into browser tab
