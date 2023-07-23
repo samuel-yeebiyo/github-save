@@ -1,0 +1,28 @@
+:root {
+  --background: rgba(0, 0, 0, 0.9);
+}
+
+body {
+  width: 400px;
+  max-height: 620px;
+  background: var(--background);
+  padding: 15px;
+  position: relative;
+  color: white;
+}
+#spinner {
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner_0XTQ {
+  transform-origin: center;
+  animation: spinner_y6GP 0.75s linear infinite;
+  fill: white;
+}
+@keyframes spinner_y6GP {
+  100% {
+    transform: rotate(360deg);
+  }
+}
