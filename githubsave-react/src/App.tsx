@@ -6,11 +6,13 @@ import browser from "webextension-polyfill";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "./context/themeContext";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [authResponse, setAuthResponse] = useState<any>();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   // // function to make request to server for user session.
   const checkWithServer = async () => {
@@ -83,23 +85,34 @@ function App() {
   }, [data, status]);
 
   return (
-    <>
-      <p className="font-bold font-monaSans"> Github Save</p>
+    <div
+      className={`${
+        theme.dark ? "dark text-white bg-darkBg" : "text-black bg-lightBg"
+      } relative w-full p-4 font-monaSans`}
+    >
+      <p className="font-bold"> Github Save</p>
 
       {isLoading ? (
         <Spinner />
       ) : (
         !authenticated && (
           <>
-            <p>
+            <p className="my-2">
               Please authenticate using your GitHub account to start saving repo
               files.
             </p>
-            <button onClick={handleAuth}>Authorize</button>
+            <button
+              className={` rounded-md py-1 px-2 ${
+                theme.dark ? "!text-black bg-lightBg" : "text-white bg-darkBg"
+              }`}
+              onClick={handleAuth}
+            >
+              Authorize
+            </button>
           </>
         )
       )}
-    </>
+    </div>
   );
 }
 

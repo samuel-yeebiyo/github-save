@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import { Root, Home, Recents, Saved, Repos } from "../pages";
+import { Root, Home, Recents, Saved, Repos, Search } from "../pages";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "repos",
         element: <Repos />,
+      },
+      {
+        path: "search",
+        element: <Search />,
       },
     ],
   },

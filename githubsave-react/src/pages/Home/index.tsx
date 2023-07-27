@@ -1,13 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { RecentlySaved, Menu } from "../../components";
 
 const Home = () => {
   const location = useLocation();
+  const [sorted, setSortedLiked] = useState([]);
 
   useEffect(() => {
-    console.log(location.state);
+    const sorted = location.state.likes
+      .sort((a: any, b: any) => a.createdAt - b.createdAt)
+      .reverse();
+    setSortedLiked(sorted);
   }, []);
 
   // const handleDeauth = async () => {
@@ -32,7 +36,7 @@ const Home = () => {
   return (
     <div>
       {/* Recently saved */}
-      <RecentlySaved />
+      <RecentlySaved liked={sorted} />
       {/* Menu */}
       <Menu />
     </div>

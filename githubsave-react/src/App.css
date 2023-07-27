@@ -4,11 +4,12 @@
 
 body {
   width: 400px;
-  max-height: 620px;
-  background: var(--background);
-  padding: 15px;
-  position: relative;
-  color: white;
+  transition: height 1s linear;
+  /* max-height: 650px; */
+}
+#root {
+  max-height: 650px;
+  overflow: auto;
 }
 #spinner {
   height: 150px;

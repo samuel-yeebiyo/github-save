@@ -7,7 +7,7 @@ interface ICard {
 
 const index = ({ fileName, repo, branch, location }: ICard) => {
   return (
-    <div className="p-3 flex justify-between items-center bg-darkCard mb-2 rounded-md">
+    <div className="p-3 flex justify-between items-center bg-lightCard dark:bg-darkCard mb-2 rounded-md shadow-lg">
       <div>
         <p className="mb-1">{fileName}</p>
         <div className="text-xs flex flex-col gap-1 text-fadedWhite">
@@ -26,7 +26,16 @@ const index = ({ fileName, repo, branch, location }: ICard) => {
         </div>
       </div>
       <div>
-        <img width="20" src="./assets/dark/close-white.svg" />
+        <img
+          className="dark:block hidden"
+          width="20"
+          src="./assets/dark/close-white.svg"
+        />
+        <img
+          className="dark:hidden block"
+          width="20"
+          src="./assets/light/close-black.svg"
+        />
       </div>
     </div>
   );

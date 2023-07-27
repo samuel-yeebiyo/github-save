@@ -1,7 +1,14 @@
 import { Card } from "..";
 import { useNavigate } from "react-router-dom";
 
-const index = () => {
+interface ILiked {
+  fileName: string;
+  repoName: string;
+  branch: string;
+  filePath: string;
+}
+
+const index = ({ liked }: { liked: ILiked[] }) => {
   const navigate = useNavigate();
 
   const handleNavigation = () => {
@@ -13,24 +20,19 @@ const index = () => {
   };
 
   return (
-    <div className="rounded-xl p-3 bg-darkInset mb-3">
+    <div className="rounded-xl p-3 bg-lightInset dark:bg-darkInset mb-3">
       <p className="mb-2">Recently Saved</p>
-      {/* Card */}
-      <Card
-        fileName="index.js"
-        repo="samuel-yeebiyo/github-save"
-        branch="main"
-        location="/auth/components/"
-      />
-      <Card
-        fileName="index.js"
-        repo="samuel-yeebiyo/github-save"
-        branch="main"
-        location="/auth/components/"
-      />
+      {liked.slice(0, 2).map(({ fileName, repoName, branch, filePath }) => (
+        <Card
+          fileName={fileName}
+          repo={repoName}
+          branch={branch}
+          location={filePath}
+        />
+      ))}
       <button
         onClick={handleNavigation}
-        className="w-full text-center h-6 bg-darkCard rounded-md"
+        className="w-full text-center py-1 bg-lightCard dark:bg-darkCard rounded-md"
       >
         See more
       </button>
