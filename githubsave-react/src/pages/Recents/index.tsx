@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { Card, Spinner } from "../../components";
 import { useTheme } from "../../context/themeContext";
@@ -13,7 +13,6 @@ interface ILiked {
 }
 
 const index = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const theme = useTheme();
   const [liked, setLiked] = useState<ILiked[]>([]);
@@ -38,7 +37,6 @@ const index = () => {
         }
       });
 
-    console.log({ response });
     pages.current += 1;
     return response;
   };
@@ -46,7 +44,6 @@ const index = () => {
   const { isLoading, data, status, refetch } = useQuery("recent", fetchRecent);
 
   useEffect(() => {
-    console.log(location.state);
     if (!isLoading && status == "success") {
       if (pages.current > 1) {
         setLiked((prev) => [...prev, ...data.likes]);

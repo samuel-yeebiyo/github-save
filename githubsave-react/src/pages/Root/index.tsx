@@ -16,7 +16,6 @@ const Root = () => {
         likes: user.likes,
       },
     });
-    console.log(user);
   }, []);
   // const handleDeauth = async () => {
   //   const deauthenticating = new Promise((resolve, reject) => {

@@ -44,7 +44,6 @@ const index = () => {
         }
       });
 
-    console.log(response);
     return response;
   };
 

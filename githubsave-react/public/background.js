@@ -93,9 +93,6 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 });
 
 const authFlow = async () => {
-  const redirectURL = browser.identity.getRedirectURL();
-  console.log({ redirectURL });
-
   try {
     const authResponseCode = await requestAuth({ interactive: false });
     const userData = await sendCodeToServer(authResponseCode);

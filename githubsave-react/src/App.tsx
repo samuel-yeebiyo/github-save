@@ -10,7 +10,6 @@ import { useTheme } from "./context/themeContext";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
-  const [authResponse, setAuthResponse] = useState<any>();
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -49,7 +48,6 @@ function App() {
           context: "AUTH",
         })
         .then((response): any => {
-          console.log(response);
           resolve(response.authed);
           if (!response) {
             reject();
@@ -73,12 +71,10 @@ function App() {
 
   useEffect(() => {
     if (status == "success") {
-      console.log({ authResponse });
       navigate("/", {
         state: data,
       });
       setAuthenticated(true);
-      setAuthResponse(data);
     } else {
       setAuthenticated(false);
     }

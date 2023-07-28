@@ -31,7 +31,6 @@ const index = () => {
         }
       });
 
-    console.log({ response });
     pages.current += 1;
     return response;
   };

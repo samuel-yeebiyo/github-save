@@ -24,7 +24,6 @@ const DropDown = ({ files }: IDropDown) => {
       }
     });
 
-    console.log({ data });
     setOrganizedFiles(data);
   }, []);
 
