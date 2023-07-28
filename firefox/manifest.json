@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "GitHub Save",
-  "version": "1.0",
+  "version": "0.1.0",
   "permissions": [
     "activeTab",
     "scripting",
@@ -14,7 +14,9 @@
   "description": "If you ever wanted to save inidividual files from a GitHub repository that piqued your interest, this extension is for you.",
 
   "icons": {
-    "48": "icons/githubsave.png"
+    "16": "icons/githubsave16.png",
+    "48": "icons/githubsave48.png",
+    "128": "icons/githubsave128.png"
   },
   "background": {
     "scripts": ["background.js"],
@@ -31,7 +33,7 @@
   "web_accessible_resources": ["injectable.js"],
 
   "browser_action": {
-    "default_icon": "icons/githubsave.png",
+    "default_icon": "icons/githubsave48.png",
     "default_title": "GitHub Save",
     "default_popup": "popup/index.html"
   },

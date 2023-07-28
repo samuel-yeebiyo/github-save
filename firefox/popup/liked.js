@@ -36,9 +36,9 @@ const getLikedFiles = async () => {
       let name = fileClone.querySelector(".file-name");
       let link = fileClone.querySelector(".file-link");
       // set template values
-      repo.innerHTML = file.repoName;
-      name.innerHTML = file.fileName;
-      link.innerHTML = file.url;
+      repo.textContent = file.repoName;
+      name.textContent = file.fileName;
+      link.textContent = file.url;
       link.setAttribute("href", file.url);
       container.appendChild(fileClone);
     });

@@ -65,7 +65,7 @@ const addIconToToolbar = () => {
       </tool-tip>
     `;
 
-    mainIcon.innerHTML = `${link} ${tooltip}`;
+    mainIcon.textContent = `${link} ${tooltip}`;
 
     actionHeader.appendChild(mainIcon);
   }
@@ -104,7 +104,7 @@ const addIconToFileView = async () => {
       </button>
     `;
     saveIcon = saveIcon.trim();
-    template.innerHTML = saveIcon;
+    template.textContent = saveIcon;
 
     fileHeader.parentNode.insertBefore(
       template.content.firstChild,
