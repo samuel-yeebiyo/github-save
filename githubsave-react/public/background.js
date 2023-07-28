@@ -16,7 +16,7 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
     case "DEAUTH":
       const logoutResponse = await fetch(
-        "https://githubsave.samuelyyy.com/logout",
+        "https://api.githubsave.samuelyyy.com/logout",
         {
           method: "POST",
           headers: {
@@ -38,7 +38,7 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       window.likedFile[sender.tab.id] = message.likedFile || null;
 
       const likeResponse = await fetch(
-        "https://githubsave.samuelyyy.com/like",
+        "https://api.githubsave.samuelyyy.com/like",
         {
           method: "POST",
           headers: {
@@ -72,7 +72,7 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
     case "CHECK":
       const checkResponse = await fetch(
-        "https://githubsave.samuelyyy.com/like/check",
+        "https://api.githubsave.samuelyyy.com/like/check",
         {
           method: "POST",
           headers: {
@@ -93,6 +93,9 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 });
 
 const authFlow = async () => {
+  const redirectURL = browser.identity.getRedirectURL();
+  console.log({ redirectURL });
+
   try {
     const authResponseCode = await requestAuth({ interactive: false });
     const userData = await sendCodeToServer(authResponseCode);
@@ -131,7 +134,7 @@ const requestAuth = async ({ interactive }) => {
 
 const sendCodeToServer = async (data) => {
   const code = data.split("?")[1].split("=")[1];
-  const response = await fetch("https://githubsave.samuelyyy.com/auth", {
+  const response = await fetch("https://api.githubsave.samuelyyy.com/auth", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

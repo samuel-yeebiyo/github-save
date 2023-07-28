@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { Card, Spinner } from "../../components";
+import { Card, Spinner, Empty } from "../../components";
 import { useTheme } from "../../context/themeContext";
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -21,12 +21,15 @@ const index = () => {
 
   const fetchLiked = async () => {
     const response = await axios
-      .get(`http://localhost:3002/likes/all?page=${pages.current}`, {
-        headers: {
-          "X-CSRF-MITIGATION-GHS": "1",
-          Accept: "application/json",
-        },
-      })
+      .get(
+        `https://api.githubsave.samuelyyy.com/likes/all?page=${pages.current}`,
+        {
+          headers: {
+            "X-CSRF-MITIGATION-GHS": "1",
+            Accept: "application/json",
+          },
+        }
+      )
       .then(({ data, status }) => {
         if (status == 401) {
           throw Error("Authorization error");
@@ -95,14 +98,18 @@ const index = () => {
           <Spinner />
         ) : status == "success" ? (
           <>
-            {liked.map(({ fileName, repoName, branch, filePath }) => (
-              <Card
-                fileName={fileName}
-                repo={repoName}
-                branch={branch}
-                location={filePath}
-              />
-            ))}
+            {liked.length > 0 ? (
+              liked.map(({ fileName, repoName, branch, filePath }) => (
+                <Card
+                  fileName={fileName}
+                  repo={repoName}
+                  branch={branch}
+                  location={filePath}
+                />
+              ))
+            ) : (
+              <Empty />
+            )}
             {pages.current < data.totalPages && (
               <button
                 onClick={() => refetch()}

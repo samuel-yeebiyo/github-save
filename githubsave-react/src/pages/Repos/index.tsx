@@ -4,7 +4,7 @@ import { useTheme } from "../../context/themeContext";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-import { RepoCard, Spinner } from "../../components";
+import { Empty, RepoCard, Spinner } from "../../components";
 
 const index = () => {
   const navigate = useNavigate();
@@ -14,12 +14,15 @@ const index = () => {
 
   const fetchLiked = async () => {
     const response = await axios
-      .get(`http://localhost:3002/likes/repo?page=${pages.current}`, {
-        headers: {
-          "X-CSRF-MITIGATION-GHS": "1",
-          Accept: "application/json",
-        },
-      })
+      .get(
+        `https://api.githubsave.samuelyyy.com/likes/repo?page=${pages.current}`,
+        {
+          headers: {
+            "X-CSRF-MITIGATION-GHS": "1",
+            Accept: "application/json",
+          },
+        }
+      )
       .then(({ data, status }) => {
         if (status == 401) {
           throw Error("Authorization error");
@@ -70,9 +73,13 @@ const index = () => {
           <Spinner />
         ) : status == "success" ? (
           <>
-            {repos.map(({ _id, image, files }: any) => (
-              <RepoCard repo={_id} image={image} files={files} />
-            ))}
+            {repos.length > 0 ? (
+              repos.map(({ _id, image, files }: any) => (
+                <RepoCard repo={_id} image={image} files={files} />
+              ))
+            ) : (
+              <Empty />
+            )}
             {pages.current < data.totalPages && (
               <button
                 onClick={() => refetch()}

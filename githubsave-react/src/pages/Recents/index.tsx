@@ -21,12 +21,15 @@ const index = () => {
 
   const fetchRecent = async () => {
     const response = await axios
-      .get(`http://localhost:3002/likes/recent?page=${pages.current}`, {
-        headers: {
-          "X-CSRF-MITIGATION-GHS": "1",
-          Accept: "application/json",
-        },
-      })
+      .get(
+        `https://api.githubsave.samuelyyy.com/likes/recent?page=${pages.current}`,
+        {
+          headers: {
+            "X-CSRF-MITIGATION-GHS": "1",
+            Accept: "application/json",
+          },
+        }
+      )
       .then(({ data, status }) => {
         if (status == 401) {
           throw Error("Authorization error");

@@ -28,7 +28,7 @@ const index = () => {
   const searchLiked = async () => {
     const response = await axios
       .get(
-        `http://localhost:3002/likes/search?page=${pages.current}&term=${searchTerm}`,
+        `https://api.githubsave.samuelyyy.com/likes/search?page=${pages.current}&term=${searchTerm}`,
         {
           headers: {
             "X-CSRF-MITIGATION-GHS": "1",
@@ -143,7 +143,7 @@ const index = () => {
             )}
           </>
         ) : (
-          <p className="text-center mt-2">No matching files found</p>
+          <p className="text-center mt-4 p-3">No matching files found</p>
         )}
       </div>
     </div>

@@ -17,7 +17,7 @@ function App() {
   // // function to make request to server for user session.
   const checkWithServer = async () => {
     const response = await axios
-      .get("https://githubsave.samuelyyy.com/user", {
+      .get("https://api.githubsave.samuelyyy.com/user", {
         headers: {
           "X-CSRF-MITIGATION-GHS": "1",
           Accept: "application/json",
