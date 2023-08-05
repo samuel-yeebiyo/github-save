@@ -1,27 +1,17 @@
-# React + TypeScript + Vite
+# GitHub Save Extension
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This extension is built using Vite, React, and TypeScript and is currently only made for firefox.
 
-Currently, two official plugins are available:
+### Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- OS: Windows, MacOS, or Linux
+- Node v16.17.0+
 
-## Expanding the ESLint configuration
+After checking that you have the requirements fulfilled, in order to build this application locally, all you need to do is the run the following commands:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+npm i # install dependencies
+npm run build
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+After which you can go to your browser and use the resulting `dist` folder output in order to load the extension temporarily.
