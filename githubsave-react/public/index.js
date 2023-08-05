@@ -63,6 +63,7 @@ const addIconToFileView = async () => {
 
     const saveButton = fileHeaderButton.cloneNode();
     saveButton.id = "my-save-file";
+    saveButton.setAttribute("title", "Save file");
     const saveSVG = generateSaveSvg();
     saveButton.appendChild(saveSVG);
 
