@@ -65,11 +65,10 @@ const index = () => {
           const allTabs = await browser.tabs.query({
             url: url,
           });
-          console.log({ allTabs });
           if (allTabs.length > 0) {
             allTabs.map(async (tab) => {
               if (tab.id)
-                await browser.tabs.sendMessage(tab.id, { message: "start" });
+                await browser.tabs.sendMessage(tab.id, { message: "UNLIKE" });
             });
           }
           refetch();

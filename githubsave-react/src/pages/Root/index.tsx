@@ -31,7 +31,9 @@ const Root = () => {
     });
   }, []);
 
-  const toggleProfileMenu = () => [setProfileMenu(!profileMenu)];
+  const toggleProfileMenu = () => {
+    setProfileMenu(!profileMenu);
+  };
 
   const handleExit = async () => {
     setDeleting(true);
@@ -47,8 +49,8 @@ const Root = () => {
           }
         });
     });
-    setDeleting(false);
     const exited = await exiting.then((res) => res);
+    setDeleting(false);
     if (exited) {
       navigate("/index.html", {
         state: "exit",
@@ -105,7 +107,7 @@ const Root = () => {
               />
             </>
           )}
-          <div className="relative">
+          <div className="relative" ref={wrapperRef}>
             <img
               className="rounded-full border border-white w-8 h-8 cursor-pointer"
               src={user.avatar}
@@ -113,10 +115,7 @@ const Root = () => {
               onClick={toggleProfileMenu}
             />
             {profileMenu && (
-              <div
-                className="absolute p-3 bg-lightInset dark:bg-darkInset left-0 -translate-x-[78%] rounded-sm shadow-xl bottom-0 translate-y-[105%]"
-                ref={wrapperRef}
-              >
+              <div className="absolute p-3 bg-gray-200 dark:bg-gray-950 left-0 -translate-x-[78%] rounded-sm shadow-xl bottom-0 translate-y-[105%]">
                 <button
                   onClick={() => {
                     setProfileMenu(false);

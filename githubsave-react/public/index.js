@@ -164,7 +164,7 @@ window.addEventListener(
 );
 
 browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.message === "start") {
+  if (request.message === "UNLIKE") {
     updateLikedIcon(false, { withVisibilty: false });
   }
 });

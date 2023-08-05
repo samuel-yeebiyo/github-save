@@ -13,6 +13,8 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
+  const [authentication, setAuthentication] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // // function to make request to server for user session.
   const checkWithServer = async () => {
@@ -43,6 +45,8 @@ function App() {
   );
 
   const handleAuth = async () => {
+    setAuthentication((prev) => !prev);
+    setErrorMessage("");
     const authenticating = new Promise((resolve, reject) => {
       browser.runtime
         .sendMessage(undefined, {
@@ -55,12 +59,15 @@ function App() {
           }
         });
     });
-
     const authed = await authenticating.then((liked) => liked);
     if (authed) {
       window.location.reload();
     } else {
       console.log("authentication failed");
+      setErrorMessage(
+        "Failed to authenticate with server. Please try again later."
+      );
+      setAuthentication((prev) => !prev);
     }
   };
 
@@ -96,7 +103,7 @@ function App() {
     >
       <p className="font-bold"> Github Save</p>
 
-      {isLoading ? (
+      {isLoading || authentication ? (
         <Spinner />
       ) : (
         !authenticated && (
@@ -107,12 +114,17 @@ function App() {
             </p>
             <button
               className={` rounded-md py-1 px-2 ${
-                theme.dark ? "!text-black bg-lightBg" : "text-white bg-darkBg"
+                theme.dark
+                  ? "!text-black bg-lightBg hover:bg-lightInset"
+                  : "text-white bg-darkBg hover:bg-darkInset"
               }`}
               onClick={handleAuth}
             >
               Authorize
             </button>
+            {errorMessage.length > 0 && (
+              <p className="mt-2 text-sm text-red-500">{errorMessage}</p>
+            )}
           </>
         )
       )}
