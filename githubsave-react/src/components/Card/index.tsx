@@ -3,9 +3,18 @@ interface ICard {
   repo: string;
   branch: string;
   location: string;
+  url: string;
+  handleDelete: (url: string) => void;
 }
 
-const index = ({ fileName, repo, branch, location }: ICard) => {
+const index = ({
+  fileName,
+  repo,
+  branch,
+  location,
+  handleDelete,
+  url,
+}: ICard) => {
   return (
     <div className="p-3 flex justify-between items-center bg-lightCard dark:bg-darkCard mb-2 rounded-md shadow-lg">
       <div>
@@ -27,12 +36,14 @@ const index = ({ fileName, repo, branch, location }: ICard) => {
       </div>
       <div>
         <img
-          className="dark:block hidden"
+          onClick={() => handleDelete(url)}
+          className="dark:block hidden cursor-pointer"
           width="20"
           src="./assets/dark/close-white.svg"
         />
         <img
-          className="dark:hidden block"
+          onClick={() => handleDelete(url)}
+          className="dark:hidden block cursor-pointer"
           width="20"
           src="./assets/light/close-black.svg"
         />

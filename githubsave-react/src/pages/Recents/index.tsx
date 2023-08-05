@@ -1,16 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { Card, Spinner } from "../../components";
+import { Card, Empty, ErrorMessage, Spinner } from "../../components";
 import { useTheme } from "../../context/themeContext";
 import { useQuery } from "react-query";
 import axios from "axios";
-
-interface ILiked {
-  fileName: string;
-  repoName: string;
-  branch: string;
-  filePath: string;
-}
+import browser from "webextension-polyfill";
+import { ILiked } from "../../utils/interface/liked.interface";
 
 const index = () => {
   const navigate = useNavigate();
@@ -41,7 +36,47 @@ const index = () => {
     return response;
   };
 
-  const { isLoading, data, status, refetch } = useQuery("recent", fetchRecent);
+  const { isLoading, isFetching, data, status, refetch } = useQuery(
+    "recent",
+    fetchRecent
+  );
+
+  const handleDelete = async (url: string) => {
+    await axios
+      .post(
+        `https://api.githubsave.samuelyyy.com/like`,
+        {
+          likedFile: url,
+        },
+        {
+          headers: {
+            "X-CSRF-MITIGATION-GHS": "1",
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          withCredentials: true,
+        }
+      )
+      .then(async ({ status }) => {
+        if (status == 401) {
+          throw Error("Authorization error");
+        } else if (status == 200) {
+          const allTabs = await browser.tabs.query({
+            url: url,
+          });
+          console.log({ allTabs });
+          if (allTabs.length > 0) {
+            allTabs.map(async (tab) => {
+              if (tab.id)
+                await browser.tabs.sendMessage(tab.id, { message: "start" });
+            });
+          }
+          pages.current -= 1;
+          refetch();
+        }
+      });
+  };
 
   useEffect(() => {
     if (!isLoading && status == "success") {
@@ -74,18 +109,24 @@ const index = () => {
         <p>Recently Saved</p>
       </div>
       <div className="mt-2 bg-lightInset dark:bg-darkInset p-3 rounded-xl">
-        {isLoading ? (
+        {isFetching ? (
           <Spinner />
         ) : status == "success" ? (
           <>
-            {liked.map(({ fileName, repoName, branch, filePath }) => (
-              <Card
-                fileName={fileName}
-                repo={repoName}
-                branch={branch}
-                location={filePath}
-              />
-            ))}
+            {liked.length > 0 ? (
+              liked.map(({ fileName, url, repoName, branch, filePath }) => (
+                <Card
+                  handleDelete={handleDelete}
+                  url={url}
+                  fileName={fileName}
+                  repo={repoName}
+                  branch={branch}
+                  location={filePath}
+                />
+              ))
+            ) : (
+              <Empty />
+            )}
             {pages.current < data.totalPages && (
               <button
                 onClick={() => refetch()}
@@ -96,7 +137,7 @@ const index = () => {
             )}
           </>
         ) : (
-          <p>Ran into error</p>
+          <ErrorMessage />
         )}
       </div>
     </div>

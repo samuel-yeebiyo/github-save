@@ -34,6 +34,14 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
         return Promise.resolve(false);
       }
       break;
+    case "EXIT":
+      const exitData = await exitFlow();
+      if (exitData) {
+        return Promise.resolve(true);
+      } else {
+        return Promise.resolve(false);
+      }
+      break;
     case "LIKE":
       window.likedFile[sender.tab.id] = message.likedFile || null;
 
@@ -95,7 +103,26 @@ browser.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 const authFlow = async () => {
   try {
     const authResponseCode = await requestAuth({ interactive: false });
-    const userData = await sendCodeToServer(authResponseCode);
+    const exitData = await sendCodeToServer(authResponseCode);
+    return exitData;
+  } catch (e) {
+    return requestAuth({ interactive: true })
+      .then(async (data) => {
+        const userData = await sendCodeToServer(data);
+        return userData;
+      })
+      .catch((e) => {
+        // send back error message
+        console.log("Error encountered during authentication ", e);
+        return null;
+      });
+  }
+};
+
+const exitFlow = async () => {
+  try {
+    const authResponseCode = await requestAuth({ interactive: false });
+    const userData = await sendCodeToServerForExit(authResponseCode);
     return userData;
   } catch (e) {
     return requestAuth({ interactive: true })
@@ -148,4 +175,26 @@ const sendCodeToServer = async (data) => {
 
   const responseData = await response.json();
   return responseData;
+};
+
+const sendCodeToServerForExit = async (data) => {
+  const code = data.split("?")[1].split("=")[1];
+  const response = await fetch("https://api.githubsave.samuelyyy.com/auth", {
+    method: "DELETE",
+    headers: {
+      "X-CSRF-MITIGATION-GHS": 1,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      code: code,
+      platform: "firefox",
+    }),
+  });
+  if (response.status !== 204) {
+    return false;
+  }
+
+  return true;
 };

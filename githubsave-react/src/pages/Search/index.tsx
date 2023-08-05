@@ -5,13 +5,8 @@ import { Card, Spinner } from "../../components";
 import { useTheme } from "../../context/themeContext";
 import { useQuery } from "react-query";
 import axios from "axios";
-
-interface ILiked {
-  fileName: string;
-  repoName: string;
-  branch: string;
-  filePath: string;
-}
+import browser from "webextension-polyfill";
+import { ILiked } from "../../utils/interface/liked.interface";
 
 const index = () => {
   const navigate = useNavigate();
@@ -59,6 +54,42 @@ const index = () => {
       enabled: searchTerm.length > 0,
     }
   );
+
+  const handleDelete = async (url: string) => {
+    await axios
+      .post(
+        `https://api.githubsave.samuelyyy.com/like`,
+        {
+          likedFile: url,
+        },
+        {
+          headers: {
+            "X-CSRF-MITIGATION-GHS": "1",
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Credentials": "true",
+          },
+          withCredentials: true,
+        }
+      )
+      .then(async ({ status }) => {
+        if (status == 401) {
+          throw Error("Authorization error");
+        } else if (status == 200) {
+          const allTabs = await browser.tabs.query({
+            url: url,
+          });
+          console.log({ allTabs });
+          if (allTabs.length > 0) {
+            allTabs.map(async (tab) => {
+              if (tab.id)
+                await browser.tabs.sendMessage(tab.id, { message: "start" });
+            });
+          }
+          refetch();
+        }
+      });
+  };
 
   useEffect(() => {
     if (!isLoading && status == "success") {
@@ -124,8 +155,10 @@ const index = () => {
           <Spinner />
         ) : liked.length > 0 ? (
           <>
-            {liked.map(({ fileName, repoName, branch, filePath }) => (
+            {liked.map(({ fileName, url, repoName, branch, filePath }) => (
               <Card
+                handleDelete={handleDelete}
+                url={url}
                 fileName={fileName}
                 repo={repoName}
                 branch={branch}

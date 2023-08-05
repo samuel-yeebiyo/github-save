@@ -5,18 +5,19 @@ import { useState, useEffect } from "react";
 import browser from "webextension-polyfill";
 import { useQuery } from "react-query";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "./context/themeContext";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
 
   // // function to make request to server for user session.
   const checkWithServer = async () => {
     const response = await axios
-      .get("https://api.githubsave.samuelyyy.com/user", {
+      .get("http://api.githubsave.samuelyyy.com/user", {
         headers: {
           "X-CSRF-MITIGATION-GHS": "1",
           Accept: "application/json",
@@ -64,13 +65,20 @@ function App() {
   };
 
   useEffect(() => {
+    if (location.state == "exit") {
+      window.history.replaceState({}, document.title);
+      window.location.reload();
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     if (error) {
       setAuthenticated(false);
     }
   }, [error]);
 
   useEffect(() => {
-    if (status == "success") {
+    if (status == "success" && data) {
       navigate("/", {
         state: data,
       });

@@ -21,8 +21,11 @@ const index = ({ repo, image, files }: ICard) => {
         />
       </div>
       {!image && <p className="text-xs">{repo}</p>}
-      <div className="text-center py-2 text-sm">
-        <p onClick={() => setOpen(!open)}>
+      <div className="text-center  text-sm">
+        <p
+          className="cursor-pointer w-full py-2"
+          onClick={() => setOpen(!open)}
+        >
           You have {files.length} liked file(s)
         </p>
         {open && <DropDown files={files} />}
