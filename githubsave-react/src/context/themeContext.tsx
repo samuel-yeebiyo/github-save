@@ -1,7 +1,10 @@
 import { createContext, useReducer, useContext } from "react";
 
+const theme = localStorage.getItem("ghs-theme");
+if (!theme) localStorage.setItem("ghs-theme", "dark");
+
 const initialTheme = {
-  dark: true,
+  dark: theme ? theme == "dark" : "dark",
 };
 
 const ThemeContext = createContext(initialTheme);
@@ -30,6 +33,7 @@ export function useThemeDispatch() {
 }
 
 const themeReducer = (theme: typeof initialTheme, action: any) => {
+  localStorage.setItem("ghs-theme", theme.dark ? "light" : "dark");
   return {
     ...theme,
     ...action,

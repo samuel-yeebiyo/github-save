@@ -5,18 +5,21 @@ import { useState, useEffect } from "react";
 import browser from "webextension-polyfill";
 import { useQuery } from "react-query";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "./context/themeContext";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
+  const [authentication, setAuthentication] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // // function to make request to server for user session.
   const checkWithServer = async () => {
     const response = await axios
-      .get("https://api.githubsave.samuelyyy.com/user", {
+      .get("http://api.githubsave.samuelyyy.com/user", {
         headers: {
           "X-CSRF-MITIGATION-GHS": "1",
           Accept: "application/json",
@@ -42,6 +45,8 @@ function App() {
   );
 
   const handleAuth = async () => {
+    setAuthentication((prev) => !prev);
+    setErrorMessage("");
     const authenticating = new Promise((resolve, reject) => {
       browser.runtime
         .sendMessage(undefined, {
@@ -54,14 +59,24 @@ function App() {
           }
         });
     });
-
     const authed = await authenticating.then((liked) => liked);
     if (authed) {
       window.location.reload();
     } else {
       console.log("authentication failed");
+      setErrorMessage(
+        "Failed to authenticate with server. Please try again later."
+      );
+      setAuthentication((prev) => !prev);
     }
   };
+
+  useEffect(() => {
+    if (location.state == "exit") {
+      window.history.replaceState({}, document.title);
+      window.location.reload();
+    }
+  }, [location.state]);
 
   useEffect(() => {
     if (error) {
@@ -70,7 +85,7 @@ function App() {
   }, [error]);
 
   useEffect(() => {
-    if (status == "success") {
+    if (status == "success" && data) {
       navigate("/", {
         state: data,
       });
@@ -88,7 +103,7 @@ function App() {
     >
       <p className="font-bold"> Github Save</p>
 
-      {isLoading ? (
+      {isLoading || authentication ? (
         <Spinner />
       ) : (
         !authenticated && (
@@ -99,12 +114,17 @@ function App() {
             </p>
             <button
               className={` rounded-md py-1 px-2 ${
-                theme.dark ? "!text-black bg-lightBg" : "text-white bg-darkBg"
+                theme.dark
+                  ? "!text-black bg-lightBg hover:bg-lightInset"
+                  : "text-white bg-darkBg hover:bg-darkInset"
               }`}
               onClick={handleAuth}
             >
               Authorize
             </button>
+            {errorMessage.length > 0 && (
+              <p className="mt-2 text-sm text-red-500">{errorMessage}</p>
+            )}
           </>
         )
       )}

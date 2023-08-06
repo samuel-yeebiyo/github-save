@@ -4,7 +4,7 @@ import { useTheme } from "../../context/themeContext";
 import { useQuery } from "react-query";
 import axios from "axios";
 
-import { Empty, RepoCard, Spinner } from "../../components";
+import { Empty, ErrorMessage, RepoCard, Spinner } from "../../components";
 
 const index = () => {
   const navigate = useNavigate();
@@ -89,7 +89,7 @@ const index = () => {
             )}
           </>
         ) : (
-          <p>Ran into error</p>
+          <ErrorMessage />
         )}
         {/* Repo card */}
       </div>

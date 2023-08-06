@@ -63,6 +63,7 @@ const addIconToFileView = async () => {
 
     const saveButton = fileHeaderButton.cloneNode();
     saveButton.id = "my-save-file";
+    saveButton.setAttribute("title", "Save file");
     const saveSVG = generateSaveSvg();
     saveButton.appendChild(saveSVG);
 
@@ -79,6 +80,13 @@ const addIconToFileView = async () => {
 };
 
 addIconToFileView();
+
+const removeLikeIcon = async () => {
+  const saveButton = document.getElementById("my-save-file");
+  if (saveButton) {
+    saveButton.remove();
+  }
+};
 
 const progressBarExists = () => {
   const bar = document.querySelector(".turbo-progress-bar");
@@ -109,6 +117,7 @@ let observer = new MutationObserver(function (mutations) {
   if (location.href !== previousUrl) {
     previousUrl = location.href;
     dejectScript();
+    removeLikeIcon();
 
     const checkForProgressBar = () => {
       const exists = progressBarExists();
@@ -154,3 +163,9 @@ window.addEventListener(
   },
   false
 );
+
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.message === "UNLIKE") {
+    updateLikedIcon(false, { withVisibilty: false });
+  }
+});
