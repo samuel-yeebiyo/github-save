@@ -3,12 +3,9 @@
   "name": "GitHub Save",
   "version": "1.0.1",
   "permissions": [
-    "activeTab",
-    "scripting",
     "identity",
-    "storage",
     "cookies",
-    "<all_urls>",
+    "https://api.githubsave.samuelyyy.com/*",
     "tabs"
   ],
   "description": "If you ever wanted to save inidividual files from a GitHub repository that piqued your interest, this extension is for you.",

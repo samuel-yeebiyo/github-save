@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:chrome": "npm run build && cp chrome/main/* dist/",
+    "build:firefox": "npm run build && cp firefox/main/* dist/",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "watch": "run-p watch:* --continue-on-error",

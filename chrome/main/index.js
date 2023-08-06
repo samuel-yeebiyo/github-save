@@ -27,88 +27,51 @@ const updateLikedIcon = (liked, { withVisibilty }) => {
   }
 };
 
-// Addding the Icon to the tool bar for easy access
-const addIconToToolbar = () => {
-  const actionHeader = document.querySelector(".AppHeader-actions");
-  const iconDiv = document.getElementById("saved-button");
-  if (!iconDiv && actionHeader) {
-    const mainIcon = document.createElement("div");
+// Work around for using the innerHTML for elements like these
+const generateSaveSvg = () => {
+  const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgIcon.setAttribute("aria-hidden", "true");
+  svgIcon.setAttribute("focusable", "false");
+  svgIcon.setAttribute("role", "img");
+  svgIcon.setAttribute("class", "octicon octicon-heart");
+  svgIcon.setAttribute("viewBox", "0 0 16 16");
+  svgIcon.setAttribute("width", "16");
+  svgIcon.setAttribute("height", "16");
+  svgIcon.setAttribute("fill", "currentColor");
+  svgIcon.setAttribute(
+    "style",
+    "display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"
+  );
 
-    // Add the necessary classes to icon container
-    mainIcon.classList.add("Button-withTooltip");
-    mainIcon.id = "saved-button";
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute(
+    "d",
+    "M7.655 14.916v-.001h-.002l-.006-.003-.018-.01a22.066 22.066 0 0 1-3.744-2.584C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.044 5.231-3.886 6.818a22.094 22.094 0 0 1-3.433 2.414 7.152 7.152 0 0 1-.31.17l-.018.01-.008.004a.75.75 0 0 1-.69 0Z"
+  );
 
-    // Add the icon and tool tip to icon container
-    const link = `
-      <a
-        id="icon-button-33e21251-cdb2-40df-a14a-085584be45cf"
-        data-view-component="true"
-        class="Button Button--iconOnly Button--secondary Button--medium AppHeader-button color-fg-muted"
-        aria-labelledby="tooltip-ccda957d-9ed3-4dbc-bea1-03c2634b16c6"
-      >
-        S
-      </a>
-    `;
-    const tooltip = `
-      <tool-tip
-        id="tooltip-ccda957d-9ed3-4dbc-bea1-03c2634b16c6"
-        for="icon-button-33e21251-cdb2-40df-a14a-085584be45cf"
-        data-direction="s"
-        data-type="label"
-        data-view-component="true"
-        class="position-absolute sr-only"
-        aria-hidden="true"
-        role="tooltip"
-        style="left: -8.14167px; top: 42px;"
-      >
-        Github Save
-      </tool-tip>
-    `;
-
-    mainIcon.textContent = `${link} ${tooltip}`;
-
-    actionHeader.appendChild(mainIcon);
-  }
+  svgIcon.appendChild(path);
+  return svgIcon;
 };
 
 const addIconToFileView = async () => {
-  const fileHeader = document.querySelector('[title="More file actions"]');
+  const fileHeaderButton = document.querySelector(
+    '[title="More file actions"]'
+  );
   const saveButton = document.getElementById("my-save-file");
-  if (fileHeader && !saveButton) {
+  if (fileHeaderButton && !saveButton) {
     const template = document.createElement("template");
-    let saveIcon = `
-      <button
-        data-component="IconButton"
-        aria-label="More file actions"
-        class="types__StyledButton-sc-ws60qy-0 dXveNa js-blob-dropdown-click"
-        title="Save file"
-        data-testid="save-file"
-        tabindex="0"
-        data-no-visuals="true"
-        id="my-save-file"
-        style="display: none;"
-      >
-        <svg
-          aria-hidden="true"
-          focusable="false"
-          role="img"
-          class="octicon octicon-heart"
-          viewBox="0 0 16 16"
-          width="16"
-          height="16"
-          fill="currentColor"
-          style="display: inline-block; user-select: none; vertical-align: text-bottom; overflow: visible;"
-        >
-          <path d="M7.655 14.916v-.001h-.002l-.006-.003-.018-.01a22.066 22.066 0 0 1-3.744-2.584C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.044 5.231-3.886 6.818a22.094 22.094 0 0 1-3.433 2.414 7.152 7.152 0 0 1-.31.17l-.018.01-.008.004a.75.75 0 0 1-.69 0Z"></path>
-        </svg>
-      </button>
-    `;
-    saveIcon = saveIcon.trim();
-    template.textContent = saveIcon;
 
-    fileHeader.parentNode.insertBefore(
-      template.content.firstChild,
-      fileHeader.nextSibling
+    const saveButton = fileHeaderButton.cloneNode();
+    saveButton.id = "my-save-file";
+    saveButton.setAttribute("title", "Save file");
+    const saveSVG = generateSaveSvg();
+    saveButton.appendChild(saveSVG);
+
+    template.appendChild(saveButton);
+
+    fileHeaderButton.parentNode.insertBefore(
+      template.firstChild,
+      fileHeaderButton.nextSibling
     );
 
     const liked = await isLiked();
@@ -116,8 +79,14 @@ const addIconToFileView = async () => {
   }
 };
 
-// addIconToToolbar();
 addIconToFileView();
+
+const removeLikeIcon = async () => {
+  const saveButton = document.getElementById("my-save-file");
+  if (saveButton) {
+    saveButton.remove();
+  }
+};
 
 const progressBarExists = () => {
   const bar = document.querySelector(".turbo-progress-bar");
@@ -148,12 +117,12 @@ let observer = new MutationObserver(function (mutations) {
   if (location.href !== previousUrl) {
     previousUrl = location.href;
     dejectScript();
+    removeLikeIcon();
 
     const checkForProgressBar = () => {
       const exists = progressBarExists();
       if (!exists) {
         addIconToFileView();
-        addIconToToolbar();
         clearProgressInterval();
         injectScript(chrome.runtime.getURL("injectable.js"), "body");
       }
@@ -194,3 +163,9 @@ window.addEventListener(
   },
   false
 );
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.message === "UNLIKE") {
+    updateLikedIcon(false, { withVisibilty: false });
+  }
+});
