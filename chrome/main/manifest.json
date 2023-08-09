@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "GitHub Save",
   "version": "1.0.0",
-  "permissions": ["identity", "cookies", "tabs"],
+  "permissions": ["identity", "tabs"],
   "host_permissions": ["https://api.githubsave.samuelyyy.com/*"],
   "description": "If you ever wanted to save inidividual files from a GitHub repository that piqued your interest, this extension is for you.",
 
