@@ -18,24 +18,28 @@ const isLiked = async () => {
 
 const updateLikedIcon = (liked, { withVisibilty }) => {
   const saveButtonWide = document.getElementById("my-save-file1");
-  const heartWide = saveButtonWide.getElementsByTagName("svg")[0];
   const saveButtonNarrow = document.getElementById("my-save-file2");
-  const heartNarrow = saveButtonNarrow.getElementsByTagName("svg")[0];
 
   if (saveButtonWide) {
-    if (liked) {
-      heartWide.style.fill = "rgba(255, 0, 0, 0.7)";
-    } else heartWide.style.fill = "currentColor";
-    if (withVisibilty) {
-      saveButtonWide.style.display = "block";
+    const heartWide = saveButtonWide.getElementsByTagName("svg")[0];
+    if (heartWide) {
+      if (liked) {
+        heartWide.style.fill = "rgba(255, 0, 0, 0.7)";
+      } else heartWide.style.fill = "currentColor";
+      if (withVisibilty) {
+        saveButtonWide.style.display = "block";
+      }
     }
   }
   if (saveButtonNarrow) {
-    if (liked) {
-      heartNarrow.style.fill = "rgba(255, 0, 0, 0.7)";
-    } else heartNarrow.style.fill = "currentColor";
-    if (withVisibilty) {
-      saveButtonNarrow.style.display = "block";
+    const heartNarrow = saveButtonNarrow.getElementsByTagName("svg")[0];
+    if (heartNarrow) {
+      if (liked) {
+        heartNarrow.style.fill = "rgba(255, 0, 0, 0.7)";
+      } else heartNarrow.style.fill = "currentColor";
+      if (withVisibilty) {
+        saveButtonNarrow.style.display = "block";
+      }
     }
   }
 };
