@@ -72,51 +72,56 @@ const addIconToFileView = async () => {
     ".react-code-view-header--narrow"
   );
 
-  const fileHeaderButtonWide = codeViewWider.querySelector(
-    '[title="More file actions"]'
-  );
-  const fileHeaderButtonNarrow = codeViewNarrow.querySelector(
-    '[title="More file actions"]'
-  );
-
-  const saveButtonWide = document.getElementById("my-save-file1");
-  const saveButtonNarrow = document.getElementById("my-save-file2");
-
-  if (!saveButtonWide && fileHeaderButtonWide) {
-    // wide
-    const templateWide = document.createElement("template");
-
-    const saveButtonWide = fileHeaderButtonWide.cloneNode();
-
-    saveButtonWide.id = "my-save-file1";
-    saveButtonWide.setAttribute("title", "Save file");
-    const saveSVG = generateSaveSvg();
-    saveButtonWide.appendChild(saveSVG);
-
-    templateWide.appendChild(saveButtonWide);
-
-    fileHeaderButtonWide.parentNode.insertBefore(
-      templateWide.firstChild,
-      fileHeaderButtonWide.nextSibling
+  if (codeViewWider) {
+    const fileHeaderButtonWide = codeViewWider.querySelector(
+      '[title="More file actions"]'
     );
+
+    const saveButtonWide = document.getElementById("my-save-file1");
+    if (!saveButtonWide && fileHeaderButtonWide) {
+      // wide
+      const templateWide = document.createElement("template");
+
+      const saveButtonWide = fileHeaderButtonWide.cloneNode();
+
+      saveButtonWide.id = "my-save-file1";
+      saveButtonWide.setAttribute("title", "Save file");
+      const saveSVG = generateSaveSvg();
+      saveButtonWide.appendChild(saveSVG);
+
+      templateWide.appendChild(saveButtonWide);
+
+      fileHeaderButtonWide.parentNode.insertBefore(
+        templateWide.firstChild,
+        fileHeaderButtonWide.nextSibling
+      );
+    }
   }
-  if (!saveButtonNarrow && fileHeaderButtonNarrow) {
-    // Narrow
-    const templateNarrow = document.createElement("template");
-
-    const saveButtonNarrow = fileHeaderButtonNarrow.cloneNode();
-
-    saveButtonNarrow.id = "my-save-file2";
-    saveButtonNarrow.setAttribute("title", "Save file");
-    const saveSVG = generateSaveSvg();
-    saveButtonNarrow.appendChild(saveSVG);
-
-    templateNarrow.appendChild(saveButtonNarrow);
-
-    fileHeaderButtonNarrow.parentNode.insertBefore(
-      templateNarrow.firstChild,
-      fileHeaderButtonNarrow.nextSibling
+  if (codeViewNarrow) {
+    const fileHeaderButtonNarrow = codeViewNarrow.querySelector(
+      '[title="More file actions"]'
     );
+
+    const saveButtonNarrow = document.getElementById("my-save-file2");
+
+    if (!saveButtonNarrow && fileHeaderButtonNarrow) {
+      // Narrow
+      const templateNarrow = document.createElement("template");
+
+      const saveButtonNarrow = fileHeaderButtonNarrow.cloneNode();
+
+      saveButtonNarrow.id = "my-save-file2";
+      saveButtonNarrow.setAttribute("title", "Save file");
+      const saveSVG = generateSaveSvg();
+      saveButtonNarrow.appendChild(saveSVG);
+
+      templateNarrow.appendChild(saveButtonNarrow);
+
+      fileHeaderButtonNarrow.parentNode.insertBefore(
+        templateNarrow.firstChild,
+        fileHeaderButtonNarrow.nextSibling
+      );
+    }
   }
 
   const liked = await isLiked();
